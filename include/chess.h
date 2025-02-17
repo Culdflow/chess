@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chess.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
+/*   By: robot <robot@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:34 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/17 03:13:05 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/17 04:11:54 by robot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,5 @@ void	put_img_to_img(t_img *dst, t_img src, int x, int y);
 
 t_moves	*new_move(t_vector2 pos);
 t_moves	*moves_get_last(t_moves *start);
-void	moves_add_end(t_moves *start, t_moves *add);
+void	moves_add(t_moves *start, t_vector2	pos, int is_white);
 #endif
