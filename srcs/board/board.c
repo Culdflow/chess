@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:19 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/17 02:17:14 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/17 03:11:04 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,15 @@ void	draw_board(t_mlx *mlx, int	color1, int color2)
 		}
 		cursor.y++;
 	}
+}
+
+int	is_piece_my_color(t_vector2 pos, int is_white)
+{
+	t_piece	piece;
+
+	piece = board[pos.y][pos.x];
+	if (((is_white == 1 && piece >= 8) || (is_white == 0 && piece < 8)) && piece != RIEN)
+		return (-1);
+	return (1);
+	
 }

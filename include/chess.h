@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:34 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/17 02:26:56 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/17 03:13:05 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ typedef struct s_img
 	t_vector2	size;
 }	t_img;
 
+typedef struct s_moves
+{
+	t_vector2		pos;
+	struct s_moves	*next;
+}	t_moves;
+
 typedef struct s_mlx
 {
 	void		*mlx;
@@ -77,6 +83,7 @@ void	draw_rectangle(t_img *data, t_vector2 start, t_vector2 end, int color);
 
 void	draw_board(t_mlx *mlx, int color1, int color2);
 void	draw_pieces(t_mlx *mlx);
+int		is_piece_my_color(t_vector2 pos, int is_white);
 
 ////////////////////////---IMAGES---//////////////////////////////////////////
 
@@ -87,4 +94,10 @@ void	put_imgs(t_mlx *mlx);
 int		xpm_file_to_img(t_mlx *mlx, char *path, t_vector2 pos);
 int		new_image(t_mlx *mlx, t_vector2 size, t_vector2 pos);
 void	put_img_to_img(t_img *dst, t_img src, int x, int y);
+
+////////////////////////---MOVES---///////////////////////////////////////////
+
+t_moves	*new_move(t_vector2 pos);
+t_moves	*moves_get_last(t_moves *start);
+void	moves_add_end(t_moves *start, t_moves *add);
 #endif
