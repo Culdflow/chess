@@ -11,6 +11,10 @@ CFILES = srcs/main.c \
 \
 		srcs/vector/vector.c \
 		srcs/vector/vector_utils.c \
+\
+		srcs/moves/moves.c \
+		srcs/moves/pion.c \
+		srcs/moves/moves_render.c \
 
 OBJS = ${CFILES:.c=.o}
 

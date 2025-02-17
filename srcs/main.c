@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
+/*   By: robot <robot@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:12 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/17 01:33:09 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/17 04:52:38 by robot            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main()
 	mlx_hook(mlx->win, ON_DESTROY, 0, mlx_loop_end, mlx->mlx);
 	draw_board(mlx, 0xe9fcf7, 0x726fa7);
 	draw_pieces(mlx);
+	draw_moves(mlx, pion_calculate_moves(vec2(1, 6), PION_B));
 	put_imgs(mlx);
 	mlx_loop(mlx->mlx);
 }
