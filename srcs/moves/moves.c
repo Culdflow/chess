@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 02:57:39 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 05:37:44 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/18 06:32:46 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,21 @@ void	free_moves(t_moves *start)
 		free(start);
 		start = tmp;
 	}
+}
+
+int	check_if_move_is_played(t_mlx *mlx, t_vector2 pos)
+{
+	t_moves	*cursor;
+
+	cursor = mlx->possible_moves;
+	while (cursor)
+	{
+		if (compare_vec2(pos, cursor->pos))
+		{
+			move_piece(mlx->current_piece, cursor->pos);
+			return (1);
+		}
+		cursor = cursor->next;
+	}
+	return (-1);
 }

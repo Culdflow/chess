@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:34 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 05:41:56 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/18 06:32:22 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_mlx
 {
 	void		*mlx;
 	void		*win;
+	t_vector2	current_piece;
 	t_moves		*possible_moves;
 	t_img		imgs[50000];
 }	t_mlx;
@@ -73,9 +74,10 @@ int			is_piece_my_color(t_vector2 pos, int is_white);
 t_moves		*check_file(t_vector2 pos, t_vector2 move_strength, int is_white, int take);
 t_moves		*check_line(t_vector2 pos, t_vector2 move_strength, int is_white, int take);
 t_moves		*check_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_strength_down, int is_white, int take);
-t_moves		*get_moves_from_pos_mouse(t_vector2 pos);
+t_moves		*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos);
 t_moves		*pawn_eat(t_vector2 pos, int is_white);
 t_moves		*check_horse_moves(t_vector2 pos, int is_white);
+void		move_piece(t_vector2 from, t_vector2 to);
 
 ////////////////////////---IMAGES---//////////////////////////////////////////
 
@@ -98,4 +100,5 @@ t_moves		*pion_calculate_moves(t_vector2 pos, t_piece piece);
 void		move_add_move(t_moves **start, t_moves *to_add);
 t_moves		*get_moves_pieces(t_vector2 pos, t_piece piece);
 void		free_moves(t_moves *start);
+int			check_if_move_is_played(t_mlx *mlx, t_vector2 pos);
 #endif

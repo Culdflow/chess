@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:33:25 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 04:14:39 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/18 06:26:46 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_vector2
 t_vector2		vec2(int x, int y);
 t_vector2		vec2_make_start(t_vector2 start, t_vector2 end);
 t_vector2		vec2_make_end(t_vector2 start, t_vector2 end);
+int				compare_vec2(t_vector2 vec1, t_vector2 vec2);
 t_vector2		add_vec2(t_vector2 vec1, t_vector2 vec2);
 t_vector2		sub_vec2(t_vector2 vec1, t_vector2 vec2);
 t_vector2		mul_vec2(t_vector2 vec1, t_vector2 vec2);

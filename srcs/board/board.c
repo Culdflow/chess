@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:19 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 06:19:51 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/18 06:31:12 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,17 @@ t_moves	*check_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_st
 	return (result);
 }
 
-t_moves	*get_moves_from_pos_mouse(t_vector2 pos)
+t_moves	*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos)
 {
+	mlx->current_piece = pos;
 	return (get_moves_pieces(pos, board[pos.y][pos.x]));
+}
+
+void	move_piece(t_vector2 from, t_vector2 to)
+{
+	t_piece	tmp;
+
+	tmp = board[from.y][from.x];
+	board[from.y][from.x] = RIEN;
+	board[to.y][to.x] = tmp;
 }
