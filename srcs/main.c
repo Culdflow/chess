@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:12 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 06:44:23 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/18 21:32:08 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	_input_mouse(int keycode, int x, int y, t_mlx *mlx)
 		{
 			free_moves(mlx->possible_moves);
 			mlx->possible_moves = NULL;
+			mlx->turn++;
 		}
 		del_images(mlx);
 		new_image(mlx, vec2(800, 800), vec2(0, 0));
@@ -55,6 +56,7 @@ int	main()
 	mlx = malloc(sizeof(t_mlx));
 	mlx->mlx = NULL;
 	mlx->win = NULL;
+	mlx->turn = 0;
 	mlx->possible_moves = NULL;
 	mlx->mlx = mlx_init();
 	if (!mlx->mlx)

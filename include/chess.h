@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:34 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 06:32:22 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/18 21:31:13 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_mlx
 {
 	void		*mlx;
 	void		*win;
+	int			turn;
 	t_vector2	current_piece;
 	t_moves		*possible_moves;
 	t_img		imgs[50000];

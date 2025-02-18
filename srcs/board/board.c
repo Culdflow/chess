@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:19 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 21:27:21 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/18 21:35:48 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,8 +291,12 @@ t_moves	*check_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_st
 
 t_moves	*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos)
 {
-	mlx->current_piece = pos;
-	return (get_moves_pieces(pos, board[pos.y][pos.x]));
+	if ((board[pos.y][pos.x] >= 8 && mlx->turn % 2 != 0) || (board[pos.y][pos.x] < 8 && board[pos.y][pos.x] > 1 && mlx->turn % 2 == 0))
+	{
+		mlx->current_piece = pos;
+		return (get_moves_pieces(pos, board[pos.y][pos.x]));
+	}
+	return (NULL);
 }
 
 void	move_piece(t_vector2 from, t_vector2 to)
