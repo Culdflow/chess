@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   moves.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: robot <robot@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 02:57:39 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/17 04:45:08 by robot            ###   ########.fr       */
+/*   Updated: 2025/02/18 05:37:44 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,55 @@ t_moves	*new_move(t_vector2 pos)
 
 t_moves	*moves_get_last(t_moves *start)
 {
+	if (!start)
+		return (NULL);
 	while (start->next)
 		start = start->next;
 	return (start);
 }
 
-void	moves_add(t_moves *start, t_vector2	pos, int is_white)
+void	moves_add(t_moves **start, t_vector2 pos, int is_white)
 {
 	t_moves	*add;
+	t_moves	*new_start;
 
-	
-	if (is_piece_my_color(pos, is_white) > 1)
+	new_start = *start;
+	if (clamp_vec2(&pos, vec2(0, 0), vec2(7, 7)) < 0)
+		return ;
+	if (is_piece_my_color(pos, is_white) > 0)
 		return ;
 	add = new_move(pos);
-	start = moves_get_last(start);
-	start->next = add;
+	if (!start || !(*start))
+	{
+		*start = add;
+		return ;
+	}
+	new_start = moves_get_last(*start);
+	new_start->next = add;
+}
+
+void	move_add_move(t_moves **start, t_moves *to_add)
+{
+	t_moves	*tmp;
+
+	tmp = *start;
+	if (!start || !(*start))
+	{
+		*start = to_add;
+		return ;
+	}
+	tmp = moves_get_last(tmp);
+	tmp->next = to_add;
+}
+
+void	free_moves(t_moves *start)
+{
+	t_moves	*tmp;
+
+	while (start)
+	{
+		tmp = start->next;
+		free(start);
+		start = tmp;
+	}
 }

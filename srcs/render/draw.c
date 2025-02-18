@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:16:16 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/17 02:25:54 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/18 03:42:23 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ void	draw_rectangle(t_img *data, t_vector2 start, t_vector2 end, int color)
 	t_vector2	goal;
 	int			x;
 
+	if (!data)
+		return ;
+	clamp_vec2(&start, vec2(0, 0), vec2(800, 800));
+	clamp_vec2(&end, vec2(0, 0), vec2(800, 800));
 	cursor = vec2_make_start(start, end);
 	x = cursor.x;
 	goal = vec2_make_end(start, end);
@@ -62,4 +66,52 @@ void	put_img_to_img(t_img *dst, t_img src, int x, int y)
 		}
 		i++;
 	}
+}
+
+void	draw_board(t_mlx *mlx, int	color1, int color2)
+{
+	t_vector2	cursor;
+
+	cursor = vec2(0, 0);
+	while (cursor.y < 8)
+	{
+		cursor.x = 0;
+		while (cursor.x < 8)
+		{
+			if ((cursor.x + cursor.y) % 2 == 0)
+				draw_rectangle(&mlx->imgs[0], mul_vec2(cursor, vec2(100, 100)), mul_vec2(add_vec2(cursor, vec2(1, 1)), vec2(100, 100)), color1);
+			else
+				draw_rectangle(&mlx->imgs[0], mul_vec2(cursor, vec2(100, 100)), mul_vec2(add_vec2(cursor, vec2(1, 1)), vec2(100, 100)), color2);
+			cursor.x++;
+		}
+		cursor.y++;
+	}
+}
+
+void	draw_piece(t_mlx *mlx, t_piece piece, t_vector2 pos)
+{
+	if (piece == PION_B)
+		xpm_file_to_img(mlx, "sprites/white_pawn.xpm", pos);
+	else if (piece == PION_N)
+		xpm_file_to_img(mlx, "sprites/black_pawn.xpm", pos);
+	else if (piece == TOUR_B)
+		xpm_file_to_img(mlx, "sprites/white_rook.xpm", pos);
+	else if (piece == TOUR_N)
+		xpm_file_to_img(mlx, "sprites/black_rook.xpm", pos);
+	else if (piece == CHEV_B)
+		xpm_file_to_img(mlx, "sprites/white_horse.xpm", pos);
+	else if (piece == CHEV_N)
+		xpm_file_to_img(mlx, "sprites/black_horse.xpm", pos);
+	else if (piece == FOU_B)
+		xpm_file_to_img(mlx, "sprites/white_fou.xpm", pos);
+	else if (piece == FOU_N)
+		xpm_file_to_img(mlx, "sprites/black_fou.xpm", pos);
+	else if (piece == REIN_B)
+		xpm_file_to_img(mlx, "sprites/white_queen.xpm", pos);
+	else if (piece == REIN_N)
+		xpm_file_to_img(mlx, "sprites/black_queen.xpm", pos);
+	else if (piece == ROI_B)
+		xpm_file_to_img(mlx, "sprites/white_king.xpm", pos);
+	else if (piece == ROI_N)
+		xpm_file_to_img(mlx, "sprites/black_king.xpm", pos);
 }

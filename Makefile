@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g #-fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 NAME = chess
 CFILES = srcs/main.c \
 \
@@ -15,6 +15,7 @@ CFILES = srcs/main.c \
 		srcs/moves/moves.c \
 		srcs/moves/pion.c \
 		srcs/moves/moves_render.c \
+		srcs/moves/moves_pieces.c \
 
 OBJS = ${CFILES:.c=.o}
 
