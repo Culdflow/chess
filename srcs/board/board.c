@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:19 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 06:31:12 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/18 21:27:21 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@
 // 	{TOUR_B, CHEV_B, FOU_B, REIN_B, ROI_B, FOU_B, CHEV_B, TOUR_B}
 
 t_piece board[9][9] = {
+	{TOUR_N, CHEV_N, FOU_N, REIN_N, ROI_N, FOU_N, CHEV_N, TOUR_N},
+	{PION_N, PION_N, PION_N, PION_N, PION_N, PION_N, PION_N, PION_N,},
 	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{ROI_N, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, PION_N, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, PION_B, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, RIEN, CHEV_B, RIEN, RIEN, ROI_B, RIEN, RIEN},
-	{TOUR_B, RIEN, TOUR_B, RIEN, RIEN, RIEN, RIEN, RIEN},
 	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN}
+	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
+	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
+	{PION_B, PION_B, PION_B, PION_B, PION_B, PION_B, PION_B, PION_B,},
+	{TOUR_B, CHEV_B, FOU_B, REIN_B, ROI_B, FOU_B, CHEV_B, TOUR_B}
 };
 
 void	draw_pieces(t_mlx *mlx)
@@ -301,5 +301,10 @@ void	move_piece(t_vector2 from, t_vector2 to)
 
 	tmp = board[from.y][from.x];
 	board[from.y][from.x] = RIEN;
-	board[to.y][to.x] = tmp;
+	if (tmp == PION_B && to.y == 0)
+		board[to.y][to.x] = REIN_B;
+	else if (tmp == PION_N && to.y == 7)
+		board[to.y][to.x] = REIN_N;
+	else
+		board[to.y][to.x] = tmp;
 }
