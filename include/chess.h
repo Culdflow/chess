@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:34 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 21:31:13 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/19 16:22:25 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_mlx
 	void		*mlx;
 	void		*win;
 	int			turn;
+	t_vector2	check;
 	t_vector2	current_piece;
 	t_moves		*possible_moves;
 	t_img		imgs[50000];
@@ -71,14 +72,18 @@ void		draw_board(t_mlx *mlx, int color1, int color2);
 ////////////////////////---BOARD---//////////////////////////////////////////
 
 void		draw_pieces(t_mlx *mlx);
-int			is_piece_my_color(t_vector2 pos, int is_white);
-t_moves		*check_file(t_vector2 pos, t_vector2 move_strength, int is_white, int take);
-t_moves		*check_line(t_vector2 pos, t_vector2 move_strength, int is_white, int take);
-t_moves		*check_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_strength_down, int is_white, int take);
+int			is_piece_my_color(t_vector2 pos, int is_white, t_piece **sim_board);
+t_moves		*check_file(t_vector2 pos, t_vector2 move_strength, int is_white, int take, t_piece **sim_board);
+t_moves		*check_line(t_vector2 pos, t_vector2 move_strength, int is_white, int take, t_piece **sim_board);
+t_moves		*check_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_strength_down, int is_white, int take, t_piece **sim_board);
 t_moves		*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos);
-t_moves		*pawn_eat(t_vector2 pos, int is_white);
+t_moves		*pawn_eat(t_vector2 pos, int is_white, t_piece **sim_board);
 t_moves		*check_horse_moves(t_vector2 pos, int is_white);
 void		move_piece(t_vector2 from, t_vector2 to);
+t_moves		*get_color_moves(int is_white, t_piece **sim_board);
+t_vector2	get_king_pos(int is_white, t_piece **sim_board);
+t_piece		**get_sim_board(t_vector2 from, t_vector2 to);
+void		free_sim_board(t_piece **sim_board);
 
 ////////////////////////---IMAGES---//////////////////////////////////////////
 
@@ -99,7 +104,12 @@ void		moves_add(t_moves **start, t_vector2	pos, int is_white);
 void		draw_moves(t_mlx *mlx, t_moves *moves);
 t_moves		*pion_calculate_moves(t_vector2 pos, t_piece piece);
 void		move_add_move(t_moves **start, t_moves *to_add);
-t_moves		*get_moves_pieces(t_vector2 pos, t_piece piece);
+t_moves		*get_moves_pieces(t_vector2 pos, t_piece piece, t_piece **sim_board);
 void		free_moves(t_moves *start);
 int			check_if_move_is_played(t_mlx *mlx, t_vector2 pos);
+int			check_if_pressure_on_pos(t_moves *moves, t_vector2 pos);
+int			check_if_check(t_mlx *mlx, t_piece **sim_board);
+void		rm_move(t_moves **start, t_moves *rm_move);
+void		rm_unauthorized_moves(t_moves **moves, t_vector2 from, int is_white);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:12 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 21:32:08 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/19 15:36:56 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,25 @@ int	_input(int keycode, t_mlx *mlx)
 int	_input_mouse(int keycode, int x, int y, t_mlx *mlx)
 {
 	t_vector2	pos;
+	t_moves		*white_moves;
+	t_moves		*black_moves;
+	t_piece		**sim_board;
 
+	white_moves = NULL;
+	black_moves = NULL;
 	if (keycode == M_CLK_L)
 	{
 		pos.x = x / 100;
 		pos.y = y / 100;
+		//check_if_check(mlx, NULL);
+		sim_board = get_sim_board(vec2(0, 0), vec2(0, 0));
+		white_moves = get_color_moves(1, sim_board);
+		black_moves = get_color_moves(0, sim_board);
+		if ((!white_moves && mlx->turn % 2 == 0) || (!black_moves && mlx->turn % 2 != 0))
+			printf("CHECKMATE!!!\n");
+		free_moves(black_moves);
+		free_moves(white_moves);
+		free_sim_board(sim_board);
 		if (check_if_move_is_played(mlx, pos) <= 0)
 		{
 			free_moves(mlx->possible_moves);
@@ -56,6 +70,7 @@ int	main()
 	mlx = malloc(sizeof(t_mlx));
 	mlx->mlx = NULL;
 	mlx->win = NULL;
+	mlx->check = vec2(0, 0);
 	mlx->turn = 0;
 	mlx->possible_moves = NULL;
 	mlx->mlx = mlx_init();
@@ -83,7 +98,7 @@ int	main()
 ////////////---------------------------------TO DO-----------------------------------------/////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////------------TURN BASED-----------------------------------------////////////////////////////////////
+/////************TURN BASED*****************************************////////////////////////////////////
 /////------------ADD CHECKMATE--------------------------------------////////////////////////////////////
 /////------------ADD CASTLING---------------------------------------////////////////////////////////////
 /////------------ADD PINNING AND PIECES NOT BEING ABLE TO MOVE------////////////////////////////////////

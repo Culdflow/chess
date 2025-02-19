@@ -13,7 +13,6 @@ CFILES = srcs/main.c \
 		srcs/vector/vector_utils.c \
 \
 		srcs/moves/moves.c \
-		srcs/moves/pion.c \
 		srcs/moves/moves_render.c \
 		srcs/moves/moves_pieces.c \
 

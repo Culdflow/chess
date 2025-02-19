@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:19:52 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 04:15:15 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/19 08:40:27 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,12 @@ t_vector2	vec2_inv(t_vector2 vec)
 	result.y = vec.y * -1;
 	result.x = vec.x * -1;
 	return (result);
+}
+
+int	reverse_bool(int a)
+{
+	if (a == 0 || a == -1)
+		return (1);
+	else
+		return (0);
 }
