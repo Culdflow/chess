@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:34 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/19 16:22:25 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/19 17:38:08 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ t_moves		*get_moves_pieces(t_vector2 pos, t_piece piece, t_piece **sim_board);
 void		free_moves(t_moves *start);
 int			check_if_move_is_played(t_mlx *mlx, t_vector2 pos);
 int			check_if_pressure_on_pos(t_moves *moves, t_vector2 pos);
-int			check_if_check(t_mlx *mlx, t_piece **sim_board);
+int			check_if_check(t_mlx *mlx, int is_white, t_piece **sim_board);
 void		rm_move(t_moves **start, t_moves *rm_move);
 void		rm_unauthorized_moves(t_moves **moves, t_vector2 from, int is_white);
 

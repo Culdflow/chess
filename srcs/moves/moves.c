@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 02:57:39 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/19 16:56:00 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/19 18:15:10 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int	check_if_pressure_on_pos(t_moves *moves, t_vector2 pos)
 {
 	while (moves)
 	{
-		printf("checking pos x: %d y: %d comparing to moves->pos x: %d y: %d\n", pos.x, pos.y, moves->pos.x, moves->pos.y);
+		//printf("checking pos x: %d y: %d comparing to moves->pos x: %d y: %d\n", pos.x, pos.y, moves->pos.x, moves->pos.y);
 		if (compare_vec2(pos, moves->pos))
 			return (1);
 		moves = moves->next;
@@ -178,19 +178,18 @@ void	print_tab(t_piece **tab)
 	}
 }
 
-int	check_if_check(t_mlx *mlx, t_piece **sim_board)
+int	check_if_check(t_mlx *mlx, int is_white, t_piece **sim_board)
 {
 	t_moves		*white_moves;
 	t_moves		*black_moves;
 	t_vector2	king_pos_w;
 	t_vector2	king_pos_b;
 
+	print_tab(sim_board);
 	black_moves = get_color_moves(0, sim_board);
 	white_moves = get_color_moves(1, sim_board);
 	king_pos_w = get_king_pos(1, sim_board);
 	king_pos_b = get_king_pos(0, sim_board);
-	//print_tab(sim_board);
-	//printf("king pos black = x: %d y: %d\n", king_pos_b.x, king_pos_b.y);
 	if (!sim_board)
 	{
 		if (check_if_pressure_on_pos(black_moves, king_pos_w) == 1)
@@ -200,13 +199,13 @@ int	check_if_check(t_mlx *mlx, t_piece **sim_board)
 	}
 	else
 	{
-		if (check_if_pressure_on_pos(black_moves, king_pos_w) == 1)
+		if (check_if_pressure_on_pos(black_moves, king_pos_w) == 1 && is_white == 1)
 		{
 			free_moves(black_moves);
 			free_moves(white_moves);
 			return (1);
 		}
-		if (check_if_pressure_on_pos(white_moves, king_pos_b) == 1)
+		if (check_if_pressure_on_pos(white_moves, king_pos_b) == 1 && is_white == 0)
 		{
 			printf("b\n");
 			free_moves(black_moves);
@@ -216,7 +215,6 @@ int	check_if_check(t_mlx *mlx, t_piece **sim_board)
 	}
 	free_moves(black_moves);
 	free_moves(white_moves);
-	print_tab(sim_board);
 	printf("king pos black x: %d y: %d\n", king_pos_b.x, king_pos_b.y);
 	printf("a\n");
 	return (-1);
@@ -233,9 +231,8 @@ void	rm_unauthorized_moves(t_moves **moves, t_vector2 from, int is_white)
 	while (start)
 	{
 		sim_board = get_sim_board(from, start->pos);
-		if ((is_white == 1 && check_if_check(NULL, sim_board) == 1) || (is_white == 0 && check_if_check(NULL, sim_board) == 0))
+		if ((check_if_check(NULL, is_white, sim_board) == 1) || (check_if_check(NULL, is_white, sim_board) == 0))
 		{
-			//printf("removed pos x:%d y:%d", start->pos.x, start->pos.y);
 			tmp = start->next;
 			rm_move(moves, start);
 			start = tmp;

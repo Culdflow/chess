@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:19 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/19 17:00:22 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/19 18:12:00 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
 
 t_piece board[9][9] = {
 	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{ROI_N, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
+	{ROI_B, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
 	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
+	{RIEN, RIEN, TOUR_N, RIEN, RIEN, RIEN, RIEN, RIEN},
 	{RIEN, TOUR_B, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
+	{RIEN, RIEN, TOUR_N, RIEN, RIEN, RIEN, RIEN, RIEN},
 	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, TOUR_B, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, ROI_B}
+	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, ROI_N}
 };
 
 void	draw_pieces(t_mlx *mlx)
@@ -54,9 +54,9 @@ int	is_piece_my_color(t_vector2 pos, int is_white, t_piece **sim_board)
 	t_piece	piece;
 
 	piece = sim_board[pos.y][pos.x];
-	if ((is_white == 1 && piece >= 8) || (is_white == 0 && piece >= 8) || piece == RIEN)
-		return (-1);
-	return (1);
+	if ((is_white == 1 && piece < 8 && piece > 1) || (is_white == 0 && piece >= 8))
+		return (1);
+	return (-1);
 }
 
 t_moves	*check_file(t_vector2 pos, t_vector2 move_strength, int is_white, int take, t_piece **sim_board)
@@ -71,7 +71,7 @@ t_moves	*check_file(t_vector2 pos, t_vector2 move_strength, int is_white, int ta
 	check_pos = add_vec2(cursor, pos);
 	if (clamp_vec2(&check_pos, vec2(0, 0), vec2(7, 7)) >= 0)
 	{
-		while (cursor.y <= move_strength.y && (sim_board[check_pos.y] && sim_board[check_pos.y][check_pos.x]))
+		while (cursor.y <= move_strength.y)
 		{
 			if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
 				moves_add(&result, check_pos, is_white);
@@ -87,8 +87,7 @@ t_moves	*check_file(t_vector2 pos, t_vector2 move_strength, int is_white, int ta
 	check_pos = sub_vec2(pos, cursor);
 	if (clamp_vec2(&check_pos, vec2(0, 0), vec2(7, 7)) < 0)
 		return (result);
-	//printf("testing pos x: %d y: %d\n", check_pos.x, check_pos.y);
-	while (cursor.y <= move_strength.x && (sim_board[check_pos.y] && sim_board[check_pos.y][check_pos.x]))
+	while (cursor.y <= move_strength.x)
 	{
 		//printf("testing pos x: %d y: %d\n", check_pos.x, check_pos.y);
 		if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
@@ -114,7 +113,7 @@ t_moves	*check_line(t_vector2 pos, t_vector2 move_strength, int is_white, int ta
 	check_pos = add_vec2(cursor, pos);
 	if (clamp_vec2(&check_pos, vec2(0, 0), vec2(7, 7)) >= 0)
 	{
-		while (cursor.x <= move_strength.y && (sim_board[check_pos.y] && sim_board[check_pos.y][check_pos.x]))
+		while (cursor.x <= move_strength.y)
 		{
 			if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
 				moves_add(&result, check_pos, is_white);
@@ -130,7 +129,7 @@ t_moves	*check_line(t_vector2 pos, t_vector2 move_strength, int is_white, int ta
 	check_pos = sub_vec2(pos, cursor);
 	if (clamp_vec2(&check_pos, vec2(0, 0), vec2(7, 7)) < 0)
 		return (result);
-	while (cursor.x <= move_strength.x && (sim_board[check_pos.y] && sim_board[check_pos.y][check_pos.x]))
+	while (cursor.x <= move_strength.x)
 	{
 		if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
 			moves_add(&result, check_pos, is_white);
@@ -161,7 +160,7 @@ t_moves	*do_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_stren
 		if (clamp_vec2(&check_pos, vec2(0, 0), vec2(7, 7)) < 0)
 				return (result);
 		//printf("what is at the place of the king : %d\n", sim_board[1][5]);
-		while (cursor.y <= move_strength_up.y && (sim_board[check_pos.y] && sim_board[check_pos.y][check_pos.x]))
+		while (cursor.y <= move_strength_up.y)
 		{
 			//printf("testing place x: %d y: %d\n", check_pos.x, check_pos.y);
 			if (inv == 0)
@@ -198,7 +197,7 @@ t_moves	*do_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_stren
 			check_pos =  sub_vec2(pos, cursor);
 		if (clamp_vec2(&check_pos, vec2(0, 0), vec2(7, 7)) < 0)
 				return (result);
-		while (cursor.y <= move_strength_down.y && (sim_board[check_pos.y] && sim_board[check_pos.y][check_pos.x]))
+		while (cursor.y <= move_strength_down.y)
 		{
 			if (inv == 0)
 			{
@@ -343,11 +342,8 @@ t_moves	*get_color_moves(int is_white, t_piece **sim_board)
 		cursor.x = 0;
 		while (cursor.x < 8)
 		{
-			if (is_piece_my_color(cursor, is_white, sim_board) == 1)
-			{
-				//printf("sim_board!!!!\n");
+			if ((is_white == 1 && sim_board[cursor.y][cursor.x] < 8) || (is_white == 0 && sim_board[cursor.y][cursor.x] >= 8 ))
 				move_add_move(&result, get_moves_pieces(cursor, sim_board[cursor.y][cursor.x], sim_board));
-			}
 			cursor.x++;
 		}
 		cursor.y++;
