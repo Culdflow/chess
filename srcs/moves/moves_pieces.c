@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 02:10:38 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/19 18:00:04 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/20 21:07:09 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,24 +82,17 @@ t_moves	*moves_pawn(t_vector2 pos, int is_white, t_piece **sim_board)
 	return (file);
 }
 
-t_moves	*moves_horse(t_vector2 pos, int is_white)
+t_moves	*moves_horse(t_vector2 pos, int is_white, t_piece **sim_board)
 {
-	return (check_horse_moves(pos, is_white));
+	return (check_horse_moves(pos, is_white, sim_board));
 }
 
-t_moves	*get_moves_pieces(t_vector2 pos, t_piece piece, t_piece **sim_board)
+t_moves	*get_moves_pieces(t_vector2 pos, t_piece piece, t_piece **sim_board, int is_white)
 {
-	int	is_white;
-
-	is_white = 0;
-	if (piece <= 1)
-		return (NULL);
-	if (piece < 8)
-		is_white = 1;
 	if (piece == PION_B || piece == PION_N)
 		return (moves_pawn(pos, is_white, sim_board));
 	if (piece == CHEV_B || piece == CHEV_N)
-		return (moves_horse(pos, is_white));
+		return (moves_horse(pos, is_white, sim_board));
 	if (piece == TOUR_B || piece == TOUR_N)
 		return (moves_rook(pos, is_white, sim_board));
 	if (piece == FOU_B || piece == FOU_N)

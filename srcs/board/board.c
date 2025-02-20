@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:19 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/19 18:12:00 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/20 21:04:36 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@
 // 	{TOUR_B, CHEV_B, FOU_B, REIN_B, ROI_B, FOU_B, CHEV_B, TOUR_B}
 
 t_piece board[9][9] = {
+	{TOUR_N, CHEV_N, FOU_N, REIN_N, ROI_N, FOU_N, CHEV_N, TOUR_N},
+	{PION_N, PION_N, PION_N, PION_N, PION_N, PION_N, PION_N, PION_N,},
 	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{ROI_B, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
 	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, RIEN, TOUR_N, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, TOUR_B, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, RIEN, TOUR_N, RIEN, RIEN, RIEN, RIEN, RIEN},
 	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
-	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, ROI_N}
+	{RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN, RIEN},
+	{PION_B, PION_B, PION_B, PION_B, PION_B, PION_B, PION_B, PION_B,},
+	{TOUR_B, CHEV_B, FOU_B, REIN_B, ROI_B, FOU_B, CHEV_B, TOUR_B}
 };
 
 void	draw_pieces(t_mlx *mlx)
@@ -74,7 +74,7 @@ t_moves	*check_file(t_vector2 pos, t_vector2 move_strength, int is_white, int ta
 		while (cursor.y <= move_strength.y)
 		{
 			if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
-				moves_add(&result, check_pos, is_white);
+				moves_add(&result, check_pos, is_white, sim_board);
 			if (sim_board[check_pos.y][check_pos.x] != RIEN)
 				break ;
 			cursor.y++;
@@ -91,7 +91,7 @@ t_moves	*check_file(t_vector2 pos, t_vector2 move_strength, int is_white, int ta
 	{
 		//printf("testing pos x: %d y: %d\n", check_pos.x, check_pos.y);
 		if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
-			moves_add(&result, check_pos, is_white);
+			moves_add(&result, check_pos, is_white, sim_board);
 		if (sim_board[check_pos.y][check_pos.x] != RIEN)
 			break ;
 		cursor.y++;
@@ -116,7 +116,7 @@ t_moves	*check_line(t_vector2 pos, t_vector2 move_strength, int is_white, int ta
 		while (cursor.x <= move_strength.y)
 		{
 			if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
-				moves_add(&result, check_pos, is_white);
+				moves_add(&result, check_pos, is_white, sim_board);
 			if (sim_board[check_pos.y][check_pos.x] != RIEN)
 				break ;
 			cursor.x++;
@@ -132,7 +132,7 @@ t_moves	*check_line(t_vector2 pos, t_vector2 move_strength, int is_white, int ta
 	while (cursor.x <= move_strength.x)
 	{
 		if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
-			moves_add(&result, check_pos, is_white);
+			moves_add(&result, check_pos, is_white, sim_board);
 		if (sim_board[check_pos.y][check_pos.x] != RIEN)
 			break ;
 		cursor.x++;
@@ -167,7 +167,7 @@ t_moves	*do_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_stren
 			{
 				check_pos = add_vec2(cursor, pos);
 				if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
-					moves_add(&result, check_pos, is_white);
+					moves_add(&result, check_pos, is_white, sim_board);
 				if (sim_board[check_pos.y][check_pos.x] != RIEN )
 					break ;
 			}
@@ -175,7 +175,7 @@ t_moves	*do_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_stren
 			{
 				check_pos = add_vec2(pos, vec2_inv_x(cursor));
 				if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
-					moves_add(&result, check_pos, is_white);
+					moves_add(&result, check_pos, is_white, sim_board);
 				if (sim_board[check_pos.y][check_pos.x] != RIEN)
 					break ;
 			}
@@ -202,14 +202,14 @@ t_moves	*do_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_stren
 			if (inv == 0)
 			{
 				if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
-					moves_add(&result, check_pos, is_white);
+					moves_add(&result, check_pos, is_white, sim_board);
 				if (sim_board[check_pos.y][check_pos.x] != RIEN)
 					break ;
 			}
 			else
 			{
 				if (sim_board[check_pos.y][check_pos.x] == RIEN || take == 1)
-					moves_add(&result, check_pos, is_white);
+					moves_add(&result, check_pos, is_white, sim_board);
 				if (sim_board[check_pos.y][check_pos.x] != RIEN)
 					break ;
 			}
@@ -238,13 +238,13 @@ t_moves	*pawn_eat(t_vector2 pos, int is_white, t_piece **sim_board)
 		if (clamp_vec2(&test_pos, vec2(0, 0), vec2(7, 7)) > -1)
 		{
 			if (sim_board[test_pos.y][test_pos.x] >= 8)
-				moves_add(&result, test_pos, is_white);
+				moves_add(&result, test_pos, is_white, sim_board);
 		}
 		test_pos = sub_vec2(pos, vec2(-1, 1));
 		if (clamp_vec2(&test_pos, vec2(0, 0), vec2(7, 7)) > -1)
 		{
 			if (sim_board[test_pos.y][test_pos.x] >= 8)
-				moves_add(&result, test_pos, is_white);
+				moves_add(&result, test_pos, is_white, sim_board);
 		}
 	}
 	else
@@ -253,31 +253,31 @@ t_moves	*pawn_eat(t_vector2 pos, int is_white, t_piece **sim_board)
 		if (clamp_vec2(&test_pos, vec2(0, 0), vec2(7, 7)) > -1)
 		{
 			if (sim_board[test_pos.y][test_pos.x] > 1 && sim_board[test_pos.y][test_pos.x] < 8)
-				moves_add(&result, test_pos, is_white);
+				moves_add(&result, test_pos, is_white, sim_board);
 		}
 		test_pos = add_vec2(pos, vec2(-1, 1));
 		if (clamp_vec2(&test_pos, vec2(0, 0), vec2(7, 7)) > -1)
 		{
 			if (sim_board[test_pos.y][test_pos.x] > 1 && sim_board[test_pos.y][test_pos.x] < 8)
-				moves_add(&result, test_pos, is_white);
+				moves_add(&result, test_pos, is_white, sim_board);
 		}
 	}
 	return (result);
 }
 
-t_moves	*check_horse_moves(t_vector2 pos, int is_white)
+t_moves	*check_horse_moves(t_vector2 pos, int is_white, t_piece **sim_board)
 {
 	t_moves	*result;
 
 	result = NULL;
-	moves_add(&result, add_vec2(pos, vec2(2, 1)), is_white);
-	moves_add(&result, add_vec2(pos, vec2(-2, 1)), is_white);
-	moves_add(&result, add_vec2(pos, vec2(2, -1)), is_white);
-	moves_add(&result, add_vec2(pos, vec2(-2, -1)), is_white);
-	moves_add(&result, add_vec2(pos, vec2(1, 2)), is_white);
-	moves_add(&result, add_vec2(pos, vec2(-1, 2)), is_white);
-	moves_add(&result, add_vec2(pos, vec2(1, -2)), is_white);
-	moves_add(&result, add_vec2(pos, vec2(-1, -2)), is_white);
+	moves_add(&result, add_vec2(pos, vec2(2, 1)), 	is_white, sim_board);
+	moves_add(&result, add_vec2(pos, vec2(-2, 1)), 	is_white, sim_board);
+	moves_add(&result, add_vec2(pos, vec2(2, -1)), 	is_white, sim_board);
+	moves_add(&result, add_vec2(pos, vec2(-2, -1)), is_white, sim_board);
+	moves_add(&result, add_vec2(pos, vec2(1, 2)), 	is_white, sim_board);
+	moves_add(&result, add_vec2(pos, vec2(-1, 2)), 	is_white, sim_board);
+	moves_add(&result, add_vec2(pos, vec2(1, -2)), 	is_white, sim_board);
+	moves_add(&result, add_vec2(pos, vec2(-1, -2)), is_white, sim_board);
 	return (result);
 }
 
@@ -304,11 +304,13 @@ t_moves	*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos)
 	is_white = 1;
 	if (board[pos.y][pos.x] >= 8)
 		is_white = 0;
-	if ((is_white == 0 && mlx->turn % 2 != 0) || (is_white == 1 && board[pos.y][pos.x] > 1 && mlx->turn % 2 == 0))
+	if (board[pos.y][pos.x] <= 1)
+		return (NULL);
+	if ((is_white == 0 && mlx->turn % 2 != 0) || (is_white == 1 && mlx->turn % 2 == 0))
 	{
 		sim_board = get_sim_board(vec2(0,0), vec2(0,0));
 		mlx->current_piece = pos;
-		moves = get_moves_pieces(pos, board[pos.y][pos.x], sim_board);
+		moves = get_moves_pieces(pos, board[pos.y][pos.x], sim_board, is_white);
 		rm_unauthorized_moves(&moves, pos, is_white);
 		free_sim_board(sim_board);
 		return (moves);
@@ -342,8 +344,26 @@ t_moves	*get_color_moves(int is_white, t_piece **sim_board)
 		cursor.x = 0;
 		while (cursor.x < 8)
 		{
-			if ((is_white == 1 && sim_board[cursor.y][cursor.x] < 8) || (is_white == 0 && sim_board[cursor.y][cursor.x] >= 8 ))
-				move_add_move(&result, get_moves_pieces(cursor, sim_board[cursor.y][cursor.x], sim_board));
+			int piece = sim_board[cursor.y][cursor.x];
+			if (piece > 1)
+			{
+				if ((is_white == 1 && piece < 8) \
+						|| (is_white == 0 && piece >= 8)) {
+							t_moves *moves = get_moves_pieces(cursor, piece, sim_board, is_white);
+							if (piece == FOU_N) {
+								printf("FOU NOIR -----\n");
+								print_moves(moves);
+								printf("-----\n");
+							}
+							if (piece == ROI_B) {
+								printf("\nROI B -----\n");
+								print_moves(moves);
+								printf("-----\n");
+							}
+							move_add_move(&result, moves);
+
+						}
+			}
 			cursor.x++;
 		}
 		cursor.y++;

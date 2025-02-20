@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:33:25 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/19 08:40:41 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/20 20:48:47 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,6 @@ t_vector2		vec2_inv_x(t_vector2 vec);
 t_vector2		vec2_inv_y(t_vector2 vec);
 t_vector2		vec2_inv(t_vector2 vec);
 int				reverse_bool(int a);
+
 
 #endif
