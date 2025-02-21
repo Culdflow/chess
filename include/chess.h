@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:34 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/21 15:10:16 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/21 17:40:02 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_mlx
 	void		*mlx;
 	void		*win;
 	int			turn;
+	t_vector2	rock;
 	t_vector2	has_king_moved;
 	t_vector2	has_white_rook_moved;
 	t_vector2	has_black_rook_moved;

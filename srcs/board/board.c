@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:19 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/21 17:13:21 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/21 18:05:40 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,6 +293,50 @@ t_moves	*check_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_st
 	return (result);
 }
 
+t_moves	*get_castle(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board)
+{
+	t_piece	piece;
+	t_moves	*result;
+
+	result = NULL;
+	piece = board[pos.y][pos.x];
+	if (is_white == 1 && piece == ROI_B)
+	{
+		if (mlx->has_king_moved.x == 0)
+		{
+			if (board[7][5] == RIEN && board[7][6] == RIEN && mlx->has_white_rook_moved.y == 0)
+			{
+				moves_add(&result, vec2(6, 7), is_white, sim_board);
+				mlx->rock.y = 1;
+			}
+			if (board[7][1] == RIEN && board[7][2] == RIEN && board[7][3] == RIEN && mlx->has_white_rook_moved.x == 0)
+			{
+				moves_add(&result, vec2(2, 7), is_white, sim_board);
+				mlx->rock.x = 1;
+			}
+		}
+	}
+	else if (is_white == 0 && piece == ROI_N)
+	{
+		if (mlx->has_king_moved.y == 0)
+		{
+			if (board[0][5] == RIEN && board[0][6] == RIEN && mlx->has_black_rook_moved.y == 0)
+			{
+				moves_add(&result, vec2(6, 0), is_white, sim_board);
+				mlx->rock.y = 1;
+			}
+			if (board[0][1] == RIEN && board[0][2] == RIEN && board[0][3] == RIEN && mlx->has_black_rook_moved.x == 0)
+			{
+				moves_add(&result, vec2(2, 0), is_white, sim_board);
+				mlx->rock.x = 1;
+			}
+		}
+	}
+	else
+		mlx->check = vec2(0, 0);
+	return (result);
+}
+
 t_moves	*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos)
 {
 	t_moves	*moves;
@@ -312,6 +356,7 @@ t_moves	*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos)
 		mlx->current_piece = pos;
 		moves = get_moves_pieces(pos, board[pos.y][pos.x], sim_board, is_white);
 		rm_unauthorized_moves(&moves, pos, is_white);
+		move_add_move(&moves, get_castle(mlx, pos, is_white, sim_board));
 		free_sim_board(sim_board);
 		return (moves);
 	}
