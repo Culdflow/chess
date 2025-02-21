@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:12 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/20 19:45:31 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/21 15:01:23 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ int	_input_mouse(int keycode, int x, int y, t_mlx *mlx)
 {
 	t_vector2	pos;
 
+	pos.x = x / 100;
+	pos.y = y / 100;
 	if (keycode == M_CLK_L)
 	{
-		pos.x = x / 100;
-		pos.y = y / 100;
 		//check_if_check(mlx, NULL);
 		if (check_if_move_is_played(mlx, pos) <= 0)
 		{
@@ -43,12 +43,14 @@ int	_input_mouse(int keycode, int x, int y, t_mlx *mlx)
 		del_images(mlx);
 		new_image(mlx, vec2(800, 800), vec2(0, 0));
 		draw_board(mlx, 0xe9fcf7, 0x726fa7);
+		draw_rectangle(&mlx->imgs[0], mul_vec2(pos, vec2(100, 100)), add_vec2(mul_vec2(pos, vec2(100, 100)), vec2(100, 100)), 0x7ec462);
 		draw_pieces(mlx);
 		draw_moves(mlx, mlx->possible_moves);
 		put_imgs(mlx);
 	}
 	return (1);
 }
+
 
 int	main()
 {
@@ -57,6 +59,9 @@ int	main()
 	mlx = malloc(sizeof(t_mlx));
 	mlx->mlx = NULL;
 	mlx->win = NULL;
+	mlx->has_king_moved = vec2(0, 0);
+	mlx->has_black_rook_moved = vec2(0, 0);
+	mlx->has_black_rook_moved = vec2(0, 0);
 	mlx->check = vec2(0, 0);
 	mlx->turn = 0;
 	mlx->possible_moves = NULL;

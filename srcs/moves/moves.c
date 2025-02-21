@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 02:57:39 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/20 21:39:47 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/21 15:10:19 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	check_if_move_is_played(t_mlx *mlx, t_vector2 pos)
 	{
 		if (compare_vec2(pos, cursor->pos))
 		{
-			move_piece(mlx->current_piece, cursor->pos);
+			move_piece(mlx, mlx->current_piece, cursor->pos);
 			return (1);
 		}
 		cursor = cursor->next;

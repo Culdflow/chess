@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:16:16 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/18 03:42:23 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/21 14:53:44 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,24 @@ void	draw_rectangle(t_img *data, t_vector2 start, t_vector2 end, int color)
 			cursor.x++;
 		}
 		cursor.y++;
+	}
+}
+
+void	draw_rectangle_no_fill(t_img *data, t_vector2 start, t_vector2 end, int color)
+{
+	int	i;
+
+	i = start.x;
+	while (i <= end.x)
+	{
+		my_mlx_pixel_put(data, i, start.y, color);
+		my_mlx_pixel_put(data, i++ , end.y, color);
+	}
+	i = start.y;
+	while (i <= end.y)
+	{
+		my_mlx_pixel_put(data, start.x, i, color);
+		my_mlx_pixel_put(data, end.x , i++, color);
 	}
 }
 

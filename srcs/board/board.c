@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:15:19 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/20 21:04:36 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/21 17:13:21 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,10 +318,34 @@ t_moves	*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos)
 	return (NULL);
 }
 
-void	move_piece(t_vector2 from, t_vector2 to)
+void	check_if_king_or_rook_moved(t_mlx *mlx, t_piece piece, t_vector2 pos)
+{
+	if (piece == ROI_B)
+		mlx->has_king_moved.x = 1;
+	if (piece == ROI_N)
+		mlx->has_king_moved.y = 1;
+	if (piece == TOUR_B)
+	{
+		if (compare_vec2(pos, vec2(7, 7)))
+			mlx->has_white_rook_moved.y = 1;
+		if (compare_vec2(pos, vec2(0, 7)))
+			mlx->has_white_rook_moved.x = 1;
+	}
+	if (piece == TOUR_N)
+	{
+		if (compare_vec2(pos, vec2(0, 0)))
+			mlx->has_white_rook_moved.x = 1;
+		if (compare_vec2(pos, vec2(7, 0)))
+			mlx->has_white_rook_moved.y = 1;
+	}
+}
+
+void	move_piece(t_mlx *mlx, t_vector2 from, t_vector2 to)
 {
 	t_piece	tmp;
 
+	if (mlx)
+		check_if_king_or_rook_moved(mlx, board[from.y][from.x], from);
 	tmp = board[from.y][from.x];
 	board[from.y][from.x] = RIEN;
 	if (tmp == PION_B && to.y == 0)
@@ -350,18 +374,7 @@ t_moves	*get_color_moves(int is_white, t_piece **sim_board)
 				if ((is_white == 1 && piece < 8) \
 						|| (is_white == 0 && piece >= 8)) {
 							t_moves *moves = get_moves_pieces(cursor, piece, sim_board, is_white);
-							if (piece == FOU_N) {
-								printf("FOU NOIR -----\n");
-								print_moves(moves);
-								printf("-----\n");
-							}
-							if (piece == ROI_B) {
-								printf("\nROI B -----\n");
-								print_moves(moves);
-								printf("-----\n");
-							}
 							move_add_move(&result, moves);
-
 						}
 			}
 			cursor.x++;

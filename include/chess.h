@@ -6,7 +6,7 @@
 /*   By: dfeve <dfeve@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:07:34 by dfeve             #+#    #+#             */
-/*   Updated: 2025/02/20 21:05:25 by dfeve            ###   ########.fr       */
+/*   Updated: 2025/02/21 15:10:16 by dfeve            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ typedef struct s_mlx
 	void		*mlx;
 	void		*win;
 	int			turn;
+	t_vector2	has_king_moved;
+	t_vector2	has_white_rook_moved;
+	t_vector2	has_black_rook_moved;
 	t_vector2	check;
 	t_vector2	current_piece;
 	t_moves		*possible_moves;
@@ -68,6 +71,7 @@ void		my_mlx_pixel_put(t_img *data, int x, int y, int color);
 void		draw_rectangle(t_img *data, t_vector2 start, t_vector2 end, int color);
 void		draw_piece(t_mlx *mlx, t_piece piece, t_vector2 pos);
 void		draw_board(t_mlx *mlx, int color1, int color2);
+void		draw_rectangle_no_fill(t_img *data, t_vector2 start, t_vector2 end, int color);
 
 ////////////////////////---BOARD---//////////////////////////////////////////
 
@@ -79,7 +83,7 @@ t_moves		*check_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_s
 t_moves		*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos);
 t_moves		*pawn_eat(t_vector2 pos, int is_white, t_piece **sim_board);
 t_moves		*check_horse_moves(t_vector2 pos, int is_white, t_piece **sim_board);
-void		move_piece(t_vector2 from, t_vector2 to);
+void		move_piece(t_mlx *mlx, t_vector2 from, t_vector2 to);
 t_moves		*get_color_moves(int is_white, t_piece **sim_board);
 t_vector2	get_king_pos(int is_white, t_piece **sim_board);
 t_piece		**get_sim_board(t_vector2 from, t_vector2 to);
