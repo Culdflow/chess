@@ -140,6 +140,7 @@ int	check_if_move_is_played(t_mlx *mlx, t_vector2 pos)
 			else if (mlx->rock.y == 1)
 			{
 				move_piece(mlx, vec2(7, pos.y), vec2(5, pos.y));
+				mlx->rock.y = 0;
 			}
 			move_piece(mlx, mlx->current_piece, cursor->pos);
 			return (1);
