@@ -132,6 +132,18 @@ int	check_if_move_is_played(t_mlx *mlx, t_vector2 pos)
 	{
 		if (compare_vec2(pos, cursor->pos))
 		{
+			if ((get_piece_from_pos(NULL, mlx->current_piece) == TOUR_B && compare_vec2(mlx->current_piece, vec2(0, 7)))
+					|| compare_vec2(pos, vec2(0, 7)))
+				mlx->has_white_rook_moved.x = 1;
+			if ((get_piece_from_pos(NULL, mlx->current_piece) == TOUR_B && compare_vec2(mlx->current_piece, vec2(7, 7)))
+					|| compare_vec2(pos, vec2(7, 7)))
+				mlx->has_white_rook_moved.y = 1;
+			if ((get_piece_from_pos(NULL, mlx->current_piece) == TOUR_N && compare_vec2(mlx->current_piece, vec2(0, 0)))
+					|| compare_vec2(pos, vec2(0, 0)))
+				mlx->has_black_rook_moved.x = 1;
+			if ((get_piece_from_pos(NULL, mlx->current_piece) == TOUR_N && compare_vec2(mlx->current_piece, vec2(7, 0)))
+					|| compare_vec2(pos, vec2(7, 0)))
+				mlx->has_black_rook_moved.y = 1;
 			if (!compare_vec2(mlx->en_passant_victim, vec2(-1, -1)))
 			{
 				if ((get_piece_from_pos(NULL, pos) < 8 && get_piece_from_pos(NULL, mlx->en_passant_victim) < 8)

@@ -319,7 +319,7 @@ t_moves	*get_castle(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board
 		ennemy_moves = get_color_moves(mlx, 0, sim_board);
 		if (mlx->has_king_moved.x == 0)
 		{
-			if (board[7][5] == RIEN && board[7][6] == RIEN && mlx->has_white_rook_moved.y == 0)
+			if (board[7][5] == RIEN && board[7][6] == RIEN && board[7][7] == TOUR_B && mlx->has_white_rook_moved.y == 0)
 			{
 				if (check_if_pressure_on_pos(ennemy_moves, vec2(5, 7)) == -1
 						&& check_if_pressure_on_pos(ennemy_moves, vec2(6, 7)) == -1
@@ -329,7 +329,7 @@ t_moves	*get_castle(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board
 					mlx->rock.y = 1;
 				}
 			}
-			if (board[7][1] == RIEN && board[7][2] == RIEN && board[7][3] == RIEN && mlx->has_white_rook_moved.x == 0)
+			if (board[7][1] == RIEN && board[7][2] == RIEN && board[7][3] == RIEN && board[7][0] == TOUR_B && mlx->has_white_rook_moved.x == 0)
 			{
 				if (check_if_pressure_on_pos(ennemy_moves, vec2(2, 7)) == -1
 							&& check_if_pressure_on_pos(ennemy_moves, vec2(3, 7)) == -1
@@ -347,7 +347,7 @@ t_moves	*get_castle(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board
 		ennemy_moves = get_color_moves(mlx, 1, sim_board);
 		if (mlx->has_king_moved.y == 0)
 		{
-			if (board[0][5] == RIEN && board[0][6] == RIEN && mlx->has_black_rook_moved.y == 0)
+			if (board[0][5] == RIEN && board[0][6] == RIEN && board[0][7] == TOUR_N && mlx->has_black_rook_moved.y == 0)
 			{
 				if (check_if_pressure_on_pos(ennemy_moves, vec2(5, 0)) == -1
 						&& check_if_pressure_on_pos(ennemy_moves, vec2(6, 0)) == -1
@@ -357,7 +357,7 @@ t_moves	*get_castle(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board
 					mlx->rock.y = 1;
 				}
 			}
-			if (board[0][1] == RIEN && board[0][2] == RIEN && board[0][3] == RIEN && mlx->has_black_rook_moved.x == 0)
+			if (board[0][1] == RIEN && board[0][2] == RIEN && board[0][3] == RIEN && board[0][0] == TOUR_N && mlx->has_black_rook_moved.x == 0)
 			{
 				if (check_if_pressure_on_pos(ennemy_moves, vec2(2, 0)) == -1
 							&& check_if_pressure_on_pos(ennemy_moves, vec2(3, 0)) == -1
