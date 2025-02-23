@@ -132,17 +132,30 @@ int	check_if_move_is_played(t_mlx *mlx, t_vector2 pos)
 	{
 		if (compare_vec2(pos, cursor->pos))
 		{
-			if (mlx->rock.x == 1)
+			if (!compare_vec2(mlx->en_passant_victim, vec2(-1, -1)))
 			{
-				move_piece(mlx, vec2(0, pos.y), vec2(3, pos.y));
+				if ((get_piece_from_pos(NULL, pos) < 8 && get_piece_from_pos(NULL, mlx->en_passant_victim) < 8)
+						&& (get_piece_from_pos(NULL, pos) >= 8 && get_piece_from_pos(NULL, mlx->en_passant_victim) >= 8))
+					mlx->en_passant_victim = vec2(-1, -1);
+			}
+			if (mlx->rock.x == 1 && abs(mlx->current_piece.x - pos.x) > 1)
+			{
+				move_piece(mlx, vec2(0, pos.y), vec2(3, pos.y), NULL);
 				mlx->rock.x = 0;
 			}
-			else if (mlx->rock.y == 1)
+			else if (mlx->rock.y == 1 && abs(mlx->current_piece.x - pos.x) > 1)
 			{
-				move_piece(mlx, vec2(7, pos.y), vec2(5, pos.y));
+				move_piece(mlx, vec2(7, pos.y), vec2(5, pos.y), NULL);
 				mlx->rock.y = 0;
 			}
-			move_piece(mlx, mlx->current_piece, cursor->pos);
+			if ((get_piece_from_pos(NULL, mlx->current_piece) == PION_B || get_piece_from_pos(NULL, mlx->current_piece) == PION_N)
+						&& (abs(mlx->current_piece.y - pos.y) > 1))
+						mlx->en_passant_victim = pos;
+			else if ((mlx->current_piece.x != pos.x) && get_piece_from_pos(NULL, pos) == RIEN 
+					&& (get_piece_from_pos(NULL, mlx->current_piece) == PION_B || get_piece_from_pos(NULL, mlx->current_piece) == PION_N)
+						&& !compare_vec2(mlx->en_passant_victim, vec2(-1, -1)))
+				replace_piece_from_board(NULL, mlx->en_passant_victim, RIEN);
+			move_piece(mlx, mlx->current_piece, pos, NULL);
 			return (1);
 		}
 		cursor = cursor->next;
@@ -195,8 +208,8 @@ int	check_if_check(t_mlx *mlx, int is_white, t_piece **sim_board)
 	t_vector2	king_pos_b;
 
 	(void)mlx;
-	black_moves = get_color_moves(0, sim_board);
-	white_moves = get_color_moves(1, sim_board);
+	black_moves = get_color_moves(mlx, 0, sim_board);
+	white_moves = get_color_moves(mlx, 1, sim_board);
 	king_pos_w = get_king_pos(1, sim_board);
 	king_pos_b = get_king_pos(0, sim_board);
 	if (is_white == 1)
@@ -223,19 +236,17 @@ int	check_if_check(t_mlx *mlx, int is_white, t_piece **sim_board)
 	return (-1);
 }
 
-void	rm_unauthorized_moves(t_moves **moves, t_vector2 from, int is_white)
+void	rm_unauthorized_moves(t_mlx *mlx, t_moves **moves, t_vector2 from, int is_white)
 {
 	t_moves	*start;
 	t_moves	*tmp;
 	t_piece	**sim_board;
 
 	start = *moves;
-	// printf("\n\n\n--\n\n\n");
-	// printf("from = x: %d y: %d\n", from.x, from.y);
 	while (start)
 	{
-		sim_board = get_sim_board(from, start->pos);
-		if ((check_if_check(NULL, is_white, sim_board) == 1) || (check_if_check(NULL, is_white, sim_board) == 0))
+		sim_board = get_sim_board(mlx, from, start->pos);
+		if ((check_if_check(mlx, is_white, sim_board) == 1) || (check_if_check(mlx, is_white, sim_board) == 0))
 		{
 			tmp = start->next;
 			rm_move(moves, start);

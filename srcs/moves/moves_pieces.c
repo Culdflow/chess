@@ -56,7 +56,7 @@ t_moves	*moves_king(t_vector2 pos, int is_white, t_piece **sim_board)
 	return (move);
 }
 
-t_moves	*moves_pawn(t_vector2 pos, int is_white, t_piece **sim_board)
+t_moves	*moves_pawn(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board)
 {
 	t_moves	*file;
 	t_moves	*eat;
@@ -77,7 +77,7 @@ t_moves	*moves_pawn(t_vector2 pos, int is_white, t_piece **sim_board)
 		else
 			file = check_file(pos, vec2(0, 1), is_white, 0, sim_board);
 	}
-	eat = pawn_eat(pos, is_white, sim_board);
+	eat = pawn_eat(mlx, pos, is_white, sim_board);
 	move_add_move(&file, eat);
 	return (file);
 }
@@ -87,10 +87,10 @@ t_moves	*moves_horse(t_vector2 pos, int is_white, t_piece **sim_board)
 	return (check_horse_moves(pos, is_white, sim_board));
 }
 
-t_moves	*get_moves_pieces(t_vector2 pos, t_piece piece, t_piece **sim_board, int is_white)
+t_moves	*get_moves_pieces(t_mlx *mlx, t_vector2 pos, t_piece piece, t_piece **sim_board, int is_white)
 {
 	if (piece == PION_B || piece == PION_N)
-		return (moves_pawn(pos, is_white, sim_board));
+		return (moves_pawn(mlx, pos, is_white, sim_board));
 	if (piece == CHEV_B || piece == CHEV_N)
 		return (moves_horse(pos, is_white, sim_board));
 	if (piece == TOUR_B || piece == TOUR_N)

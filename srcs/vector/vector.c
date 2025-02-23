@@ -64,3 +64,10 @@ t_vector2	sub_vec2(t_vector2 vec1, t_vector2 vec2)//Returns vec1 - vec2
 	result.y = vec1.y - vec2.y;
 	return (result);
 }
+
+int	abs(int x)
+{
+	if (x < 0)
+		return (x * -1);
+	return (x);
+}

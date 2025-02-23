@@ -226,7 +226,7 @@ t_moves	*do_diag(t_vector2 pos, t_vector2 move_strength_up, t_vector2 move_stren
 	return (result);
 }
 
-t_moves	*pawn_eat(t_vector2 pos, int is_white, t_piece **sim_board)
+t_moves	*pawn_eat(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board)
 {
 	t_moves		*result;
 	t_vector2	test_pos;
@@ -261,6 +261,18 @@ t_moves	*pawn_eat(t_vector2 pos, int is_white, t_piece **sim_board)
 			if (sim_board[test_pos.y][test_pos.x] > 1 && sim_board[test_pos.y][test_pos.x] < 8)
 				moves_add(&result, test_pos, is_white, sim_board);
 		}
+	}
+	if (!compare_vec2(mlx->en_passant_victim, vec2(-1, -1)))
+	{
+		if (is_piece_my_color(mlx->en_passant_victim, is_white, sim_board) != 1
+				&& mlx->en_passant_victim.y == pos.y
+				&& abs(mlx->en_passant_victim.x - pos.x) == 1)
+			{
+				if (pos.y == 3)
+					moves_add(&result, sub_vec2(mlx->en_passant_victim, vec2(0, 1)), is_white, sim_board);
+				else
+					moves_add(&result, add_vec2(mlx->en_passant_victim, vec2(0, 1)), is_white, sim_board);
+			}
 	}
 	return (result);
 }
@@ -304,13 +316,14 @@ t_moves	*get_castle(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board
 	piece = board[pos.y][pos.x];
 	if (is_white == 1 && piece == ROI_B)
 	{
-		ennemy_moves = get_color_moves(0, sim_board);
+		ennemy_moves = get_color_moves(mlx, 0, sim_board);
 		if (mlx->has_king_moved.x == 0)
 		{
 			if (board[7][5] == RIEN && board[7][6] == RIEN && mlx->has_white_rook_moved.y == 0)
 			{
 				if (check_if_pressure_on_pos(ennemy_moves, vec2(5, 7)) == -1
-						&& check_if_pressure_on_pos(ennemy_moves, vec2(6, 7)) == -1)
+						&& check_if_pressure_on_pos(ennemy_moves, vec2(6, 7)) == -1
+							&& check_if_pressure_on_pos(ennemy_moves, vec2(4, 7)) == -1)
 				{
 					moves_add(&result, vec2(6, 7), is_white, sim_board);
 					mlx->rock.y = 1;
@@ -319,7 +332,8 @@ t_moves	*get_castle(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board
 			if (board[7][1] == RIEN && board[7][2] == RIEN && board[7][3] == RIEN && mlx->has_white_rook_moved.x == 0)
 			{
 				if (check_if_pressure_on_pos(ennemy_moves, vec2(2, 7)) == -1
-							&& check_if_pressure_on_pos(ennemy_moves, vec2(3, 7)) == -1)
+							&& check_if_pressure_on_pos(ennemy_moves, vec2(3, 7)) == -1
+								&& check_if_pressure_on_pos(ennemy_moves, vec2(4, 7)) == -1)
 				{
 					moves_add(&result, vec2(2, 7), is_white, sim_board);
 					mlx->rock.x = 1;
@@ -330,13 +344,14 @@ t_moves	*get_castle(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board
 	}
 	else if (is_white == 0 && piece == ROI_N)
 	{
-		ennemy_moves = get_color_moves(1, sim_board);
+		ennemy_moves = get_color_moves(mlx, 1, sim_board);
 		if (mlx->has_king_moved.y == 0)
 		{
 			if (board[0][5] == RIEN && board[0][6] == RIEN && mlx->has_black_rook_moved.y == 0)
 			{
 				if (check_if_pressure_on_pos(ennemy_moves, vec2(5, 0)) == -1
-						&& check_if_pressure_on_pos(ennemy_moves, vec2(6, 0)) == -1)
+						&& check_if_pressure_on_pos(ennemy_moves, vec2(6, 0)) == -1
+							&& check_if_pressure_on_pos(ennemy_moves, vec2(4, 0)) == -1)
 				{
 					moves_add(&result, vec2(6, 0), is_white, sim_board);
 					mlx->rock.y = 1;
@@ -345,7 +360,8 @@ t_moves	*get_castle(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board
 			if (board[0][1] == RIEN && board[0][2] == RIEN && board[0][3] == RIEN && mlx->has_black_rook_moved.x == 0)
 			{
 				if (check_if_pressure_on_pos(ennemy_moves, vec2(2, 0)) == -1
-							&& check_if_pressure_on_pos(ennemy_moves, vec2(3, 0)) == -1)
+							&& check_if_pressure_on_pos(ennemy_moves, vec2(3, 0)) == -1
+								&& check_if_pressure_on_pos(ennemy_moves, vec2(4, 0)) == -1)
 				{
 					moves_add(&result, vec2(2, 0), is_white, sim_board);
 					mlx->rock.x = 1;
@@ -357,6 +373,21 @@ t_moves	*get_castle(t_mlx *mlx, t_vector2 pos, int is_white, t_piece **sim_board
 	else
 		mlx->rock = vec2(0, 0);
 	return (result);
+}
+
+t_piece	get_piece_from_pos(t_piece **sim_board, t_vector2 pos)
+{
+	if (sim_board)
+		return (sim_board[pos.y][pos.x]);
+	return (board[pos.y][pos.x]);
+}
+
+void	replace_piece_from_board(t_piece **sim_board, t_vector2 from, t_piece to)
+{
+	if (sim_board)
+		sim_board[from.y][from.x] = to;
+	else
+		board[from.y][from.x] = to;
 }
 
 t_moves	*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos)
@@ -374,10 +405,10 @@ t_moves	*get_moves_from_pos_mouse(t_mlx *mlx, t_vector2 pos)
 		return (NULL);
 	if ((is_white == 0 && mlx->turn % 2 != 0) || (is_white == 1 && mlx->turn % 2 == 0))
 	{
-		sim_board = get_sim_board(vec2(0,0), vec2(0,0));
+		sim_board = get_sim_board(mlx, vec2(0,0), vec2(0,0));
 		mlx->current_piece = pos;
-		moves = get_moves_pieces(pos, board[pos.y][pos.x], sim_board, is_white);
-		rm_unauthorized_moves(&moves, pos, is_white);
+		moves = get_moves_pieces(mlx, pos, board[pos.y][pos.x], sim_board, is_white);
+		rm_unauthorized_moves(mlx, &moves, pos, is_white);
 		move_add_move(&moves, get_castle(mlx, pos, is_white, sim_board));
 		free_sim_board(sim_board);
 		return (moves);
@@ -407,23 +438,41 @@ void	check_if_king_or_rook_moved(t_mlx *mlx, t_piece piece, t_vector2 pos)
 	}
 }
 
-void	move_piece(t_mlx *mlx, t_vector2 from, t_vector2 to)
+void	move_piece(t_mlx *mlx, t_vector2 from, t_vector2 to, t_piece **sim_board)
 {
 	t_piece	tmp;
 
-	if (mlx)
-		check_if_king_or_rook_moved(mlx, board[from.y][from.x], from);
-	tmp = board[from.y][from.x];
-	board[from.y][from.x] = RIEN;
-	if (tmp == PION_B && to.y == 0)
-		board[to.y][to.x] = REIN_B;
-	else if (tmp == PION_N && to.y == 7)
-		board[to.y][to.x] = REIN_N;
+	if (!sim_board)
+	{
+		if (mlx)
+			check_if_king_or_rook_moved(mlx, board[from.y][from.x], from);
+		tmp = board[from.y][from.x];
+		board[from.y][from.x] = RIEN;
+		if (tmp == PION_B && to.y == 0)
+			board[to.y][to.x] = REIN_B;
+		else if (tmp == PION_N && to.y == 7)
+			board[to.y][to.x] = REIN_N;
+		else
+			board[to.y][to.x] = tmp;
+	}
 	else
-		board[to.y][to.x] = tmp;
+	{
+		if ((from.x != to.x) && get_piece_from_pos(sim_board, to) == RIEN
+					&& (get_piece_from_pos(sim_board, from) == PION_B || get_piece_from_pos(sim_board, from) == PION_N)
+						&& !compare_vec2(mlx->en_passant_victim, vec2(-1, -1)))
+				replace_piece_from_board(sim_board, mlx->en_passant_victim, RIEN);
+		tmp = sim_board[from.y][from.x];
+		sim_board[from.y][from.x] = RIEN;
+		if (tmp == PION_B && to.y == 0)
+			sim_board[to.y][to.x] = REIN_B;
+		else if (tmp == PION_N && to.y == 7)
+			sim_board[to.y][to.x] = REIN_N;
+		else
+			sim_board[to.y][to.x] = tmp;
+	}
 }
 
-t_moves	*get_color_moves(int is_white, t_piece **sim_board)
+t_moves	*get_color_moves(t_mlx *mlx, int is_white, t_piece **sim_board)
 {
 	t_vector2	cursor;
 	t_moves		*result;
@@ -440,7 +489,7 @@ t_moves	*get_color_moves(int is_white, t_piece **sim_board)
 			{
 				if ((is_white == 1 && piece < 8) \
 						|| (is_white == 0 && piece >= 8)) {
-							t_moves *moves = get_moves_pieces(cursor, piece, sim_board, is_white);
+							t_moves *moves = get_moves_pieces(mlx, cursor, piece, sim_board, is_white);
 							move_add_move(&result, moves);
 						}
 			}
@@ -478,7 +527,7 @@ t_vector2	get_king_pos(int is_white, t_piece **sim_board)
 	return (vec2(0, 0));
 }
 
-t_piece	**get_sim_board(t_vector2 from, t_vector2 to)
+t_piece	**get_sim_board(t_mlx *mlx, t_vector2 from, t_vector2 to)
 {
 	t_piece		**sim_board;
 	t_vector2	cursor;
@@ -498,8 +547,7 @@ t_piece	**get_sim_board(t_vector2 from, t_vector2 to)
 	}
 	if (!compare_vec2(from, to))
 	{
-		sim_board[to.y][to.x] = sim_board[from.y][from.x];
-		sim_board[from.y][from.x] = RIEN;
+		move_piece(mlx, from, to, sim_board);
 	}
 	return (sim_board);
 }

@@ -60,6 +60,7 @@ int	main()
 	mlx->mlx = NULL;
 	mlx->win = NULL;
 	mlx->has_king_moved = vec2(0, 0);
+	mlx->en_passant_victim = vec2(-1, -1);
 	mlx->has_black_rook_moved = vec2(0, 0);
 	mlx->has_black_rook_moved = vec2(0, 0);
 	mlx->check = vec2(0, 0);

@@ -88,6 +88,6 @@ t_vector2		vec2_inv_x(t_vector2 vec);
 t_vector2		vec2_inv_y(t_vector2 vec);
 t_vector2		vec2_inv(t_vector2 vec);
 int				reverse_bool(int a);
-
+int				abs(int x);
 
 #endif

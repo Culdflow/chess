@@ -76,7 +76,8 @@ void	put_img_to_img(t_img *dst, t_img src, int x, int y)
 	int j;
 
 	i = 0;
-	while(i < src.size.y) {
+	while(i < src.size.y)
+	{
 		j = 0;
 		while (j < src.size.x) {
 			my_mlx_pixel_put(dst, x + i, y + j, get_pixel_img(src, i, j));
